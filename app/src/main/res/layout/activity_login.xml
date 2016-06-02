@@ -5,59 +5,42 @@
     android:id="@+id/activity_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
-    tools:context="com.baxsoftware.planit.LoginActivity"
-    tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="0dp">
+    android:theme="@style/AppTheme.NoActionBar"
+    android:background="@color/colorPrimary"
+    tools:context="com.baxsoftware.planit.LoginActivity">
 
     <ImageView
-        android:src="@drawable/logonavy"
-        android:layout_width="125dp"
-        android:layout_height="125dp"
-        tools:layout_editor_absoluteX="129dp"
-        tools:layout_editor_absoluteY="56dp"
-        android:id="@+id/imageView"
-        android:contentDescription="@string/cd_PlanItLogo"
+        android:src="@drawable/logo"
+        android:layout_width="122dp"
+        android:layout_height="128dp"
+        android:id="@+id/loginLogo"
+        android:contentDescription="@string/cd_logo"
         app:layout_constraintLeft_toLeftOf="@+id/activity_login"
-        tools:layout_constraintLeft_creator="0"
         app:layout_constraintTop_toTopOf="@+id/activity_login"
-        android:layout_marginTop="56dp"
-        tools:layout_constraintTop_creator="0"
-        app:layout_constraintRight_toRightOf="@+id/activity_login"
-        tools:layout_constraintRight_creator="0" />
+        android:layout_marginTop="64dp"
+        app:layout_constraintRight_toRightOf="@+id/activity_login" />
 
     <TextView
-        android:text="@string/PlanIt"
+        android:text="@string/app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="131dp"
-        tools:layout_editor_absoluteY="181dp"
-        android:id="@+id/textView"
-        tools:text="@string/PlanIt"
-        android:textSize="48sp"
-        android:textStyle="normal|bold"
-        android:fontFamily="cursive"
+        android:id="@+id/loginBrand"
         app:layout_constraintLeft_toLeftOf="@+id/activity_login"
-        tools:layout_constraintLeft_creator="0"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        tools:layout_constraintTop_creator="0"
+        app:layout_constraintTop_toBottomOf="@+id/loginLogo"
+        android:layout_marginTop="16dp"
         app:layout_constraintRight_toRightOf="@+id/activity_login"
-        tools:layout_constraintRight_creator="0" />
+        android:textSize="36sp"
+        android:textColor="@android:color/darker_gray" />
 
-    <ImageButton
-        android:src="@drawable/login_gplus"
-        android:layout_width="352dp"
-        android:layout_height="80dp"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="496dp"
-        android:id="@+id/imageButton"
-        android:scaleType="fitXY"
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/google_sign_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="@+id/activity_login"
-        tools:layout_constraintLeft_creator="0"
+        app:layout_constraintTop_toBottomOf="@+id/loginBrand"
+        android:layout_marginTop="8dp"
         app:layout_constraintRight_toRightOf="@+id/activity_login"
-        tools:layout_constraintRight_creator="0"
         app:layout_constraintBottom_toBottomOf="@+id/activity_login"
-        android:layout_marginBottom="64dp"
-        tools:layout_constraintBottom_creator="0" />
+        app:layout_constraintVertical_bias="0.41000003" />
 
 </android.support.constraint.ConstraintLayout>

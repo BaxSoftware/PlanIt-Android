@@ -1,5 +1,6 @@
 package com.baxsoftware.planit;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -22,6 +24,7 @@ public class MainActivity extends AppCompatActivity
 
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
+    private FirebaseAnalytics mAnalytics;
     private EventsManager mEvents;
 
     @Override
@@ -31,6 +34,9 @@ public class MainActivity extends AppCompatActivity
         // Init or get event manager
         mEvents = EventsManager.getInstance();
         mEvents.updateContext(this.getApplicationContext());
+
+        // Init Firebase Analytics
+        mAnalytics = FirebaseAnalytics.getInstance(this);
 
         // Check login and forward to login if not authenticated
         mAuth = FirebaseAuth.getInstance();
@@ -47,8 +53,8 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent ceIntent = new Intent(getApplicationContext(), CreateEventActivity.class);
+                startActivity(ceIntent);
             }
         });
 
@@ -60,11 +66,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View navHeader = navigationView.getHeaderView(0);
         if (mUser != null) {
-            TextView navUser = (TextView) navigationView.getHeaderView(R.id.navUsername);
-            TextView navEmail = (TextView) navigationView.getHeaderView(R.id.navEmail);
-            //navUser.setText(mUser.getDisplayName());
-            //navEmail.setText(mUser.getEmail());
+            TextView navUser = (TextView) navHeader.findViewById(R.id.navUsername);
+            TextView navEmail = (TextView) navHeader.findViewById(R.id.navEmail);
+            navUser.setText(mUser.getDisplayName());
+            navEmail.setText(mUser.getEmail());
         }
     }
 
@@ -120,7 +127,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_newgroup) {
             // Handle the camera action
         } else if (id == R.id.nav_settings) {
 

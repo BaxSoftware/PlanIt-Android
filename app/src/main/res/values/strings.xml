@@ -16,4 +16,5 @@
     <string name="in_deleteevent">Delete Event</string>
     <string name="ic_event_name">Event Name</string>
     <string name="ic_description">Description (optional)</string>
+    <string name="cd_profileimg">Profile Image</string>
 </resources>

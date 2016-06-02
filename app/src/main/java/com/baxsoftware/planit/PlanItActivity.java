@@ -8,9 +8,11 @@ import com.facebook.appevents.AppEventsLogger;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
-public class PlanItActivity extends AppCompatActivity {
+public abstract class PlanItActivity extends AppCompatActivity {
     protected FirebaseAnalytics mAnalytics;
+    protected FirebaseRemoteConfig mRemoteConfig;
     protected FirebaseAuth mAuth;
     protected FirebaseUser mUser;
 
@@ -27,6 +29,9 @@ public class PlanItActivity extends AppCompatActivity {
 
         // Init Firebase Analytics
         mAnalytics = FirebaseAnalytics.getInstance(this);
+
+        // Init Firebase Remote Config
+        mRemoteConfig = FirebaseRemoteConfig.getInstance();
 
         // Init Firebase Auth
         mAuth = FirebaseAuth.getInstance();

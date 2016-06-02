@@ -34,10 +34,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import com.facebook.FacebookSdk;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends PlanItActivity implements View.OnClickListener {
 
-    private FirebaseAuth mAuth;
-    private EventsManager mEvents;
     private static GoogleApiClient mGoogleApiClient;
     private static CallbackManager mCallbackManager;
 
@@ -48,13 +46,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        // Init or get event manager
-        mEvents = EventsManager.getInstance();
-        mEvents.updateContext(this.getApplicationContext());
-
-        // Init Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
 
         // Init Google sign-in
         // Setup sign-in options
@@ -70,16 +61,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .addApi(AppIndex.API)
                 .build();
 
-        mAuth.signOut();
-
         // Setup the button
         SignInButton signInButton = (SignInButton) findViewById(R.id.google_sign_in_button);
         signInButton.setSize(SignInButton.SIZE_WIDE);
         signInButton.setScopes(gso.getScopeArray());
         signInButton.setOnClickListener(this);
 
-        // Init Facebook sign-in
-        FacebookSdk.sdkInitialize(getApplicationContext());
+        // Init Facebook callback manager
         mCallbackManager = CallbackManager.Factory.create();
 
         // Setup the Button
@@ -108,7 +96,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
-        mAuth.addAuthStateListener(mEvents.mAuthListener);
         AppIndex.AppIndexApi.start(mGoogleApiClient, getIndexApiAction());
     }
 
@@ -116,9 +103,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onStop() {
         super.onStop();
         AppIndex.AppIndexApi.end(mGoogleApiClient, getIndexApiAction());
-        if (mEvents.mAuthListener != null) {
-            mAuth.removeAuthStateListener(mEvents.mAuthListener);
-        }
         mGoogleApiClient.disconnect();
     }
 

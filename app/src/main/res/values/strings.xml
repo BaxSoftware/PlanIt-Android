@@ -11,4 +11,9 @@
     <string name="action_search">Search</string>
     <string name="title_activity_create_event">Plan New Event</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="in_createfb">Create Facebook event</string>
+    <string name="in_creategcevent">Create Google Calendar event</string>
+    <string name="in_deleteevent">Delete Event</string>
+    <string name="ic_event_name">Event Name</string>
+    <string name="ic_description">Description (optional)</string>
 </resources>

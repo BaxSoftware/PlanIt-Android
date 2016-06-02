@@ -21,34 +21,12 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends PlanItActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    private FirebaseAuth mAuth;
-    private FirebaseUser mUser;
-    private FirebaseAnalytics mAnalytics;
-    private EventsManager mEvents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Init or get event manager
-        mEvents = EventsManager.getInstance();
-        mEvents.updateContext(this.getApplicationContext());
-
-        // Init Firebase Analytics
-        mAnalytics = FirebaseAnalytics.getInstance(this);
-
-        // Init Facebook SDK
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
-
-        // Check login and forward to login if not authenticated
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
-
-        // TODO: Bootstrap
 
         // Setup the main activity frontend
         setContentView(R.layout.activity_main);
@@ -78,20 +56,6 @@ public class MainActivity extends AppCompatActivity
             TextView navEmail = (TextView) navHeader.findViewById(R.id.navEmail);
             navUser.setText(mUser.getDisplayName());
             navEmail.setText(mUser.getEmail());
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mEvents.mAuthListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mEvents.mAuthListener != null) {
-            mAuth.removeAuthStateListener(mEvents.mAuthListener);
         }
     }
 

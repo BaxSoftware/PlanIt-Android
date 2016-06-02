@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/loginBrand"
         android:textSize="36sp"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@android:color/background_light"
         app:layout_constraintLeft_toLeftOf="@+id/activity_login"
         app:layout_constraintTop_toBottomOf="@+id/loginLogo"
         android:layout_marginTop="16dp"
@@ -54,6 +54,6 @@
         app:layout_constraintRight_toRightOf="@+id/activity_login"
         app:layout_constraintBottom_toTopOf="@+id/facebook_sign_in_button"
         android:layout_marginBottom="8dp"
-        app:layout_constraintVertical_bias="0.91" />
+        app:layout_constraintVertical_bias="0.90999997" />
 
 </android.support.constraint.ConstraintLayout>

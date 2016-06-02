@@ -19,7 +19,7 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
-public class CreateEventActivity extends AppCompatActivity {
+public class CreateEventActivity extends PlanItActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -125,6 +125,22 @@ public class CreateEventActivity extends AppCompatActivity {
     }
 
     /**
+     * A fragment containing view for general ("What?") tab
+     */
+    public static class GeneralTabFragment extends Fragment {
+
+        public GeneralTabFragment() {
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_create_event_general, container, false);
+            return rootView;
+        }
+    }
+
+    /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
@@ -136,9 +152,10 @@ public class CreateEventActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            if (position == 0)
+                return new GeneralTabFragment();
+            else
+                return PlaceholderFragment.newInstance(position + 1);
         }
 
         @Override
@@ -151,7 +168,7 @@ public class CreateEventActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Why?";
+                    return "What?";
                 case 1:
                     return "Who?";
                 case 2:

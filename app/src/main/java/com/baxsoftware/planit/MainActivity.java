@@ -15,6 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,6 +39,10 @@ public class MainActivity extends AppCompatActivity
 
         // Init Firebase Analytics
         mAnalytics = FirebaseAnalytics.getInstance(this);
+
+        // Init Facebook SDK
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
 
         // Check login and forward to login if not authenticated
         mAuth = FirebaseAuth.getInstance();

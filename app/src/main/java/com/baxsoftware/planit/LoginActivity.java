@@ -1,6 +1,7 @@
 package com.baxsoftware.planit;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -18,14 +28,18 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+
+import com.facebook.FacebookSdk;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth mAuth;
     private EventsManager mEvents;
     private static GoogleApiClient mGoogleApiClient;
+    private static CallbackManager mCallbackManager;
 
     private static final String TAG = "[LOGIN]";
     private static final int RC_SIGN_IN = 100;
@@ -53,27 +67,59 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, mEvents.mGoogleConnectionFailedListener)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .addApi(AppIndex.API)
                 .build();
+
+        mAuth.signOut();
 
         // Setup the button
         SignInButton signInButton = (SignInButton) findViewById(R.id.google_sign_in_button);
         signInButton.setSize(SignInButton.SIZE_WIDE);
         signInButton.setScopes(gso.getScopeArray());
         signInButton.setOnClickListener(this);
+
+        // Init Facebook sign-in
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        mCallbackManager = CallbackManager.Factory.create();
+
+        // Setup the Button
+        LoginButton loginButton = (LoginButton) findViewById(R.id.facebook_sign_in_button);
+        loginButton.setReadPermissions("email", "public_profile", "user_friends");
+        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.d(TAG, "facebook:onSuccess:" + loginResult);
+                handleFacebookAccessToken(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d(TAG, "facebook:onCancel");
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                Log.d(TAG, "facebook:onError", exception);
+            }
+        });
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        mGoogleApiClient.connect();
         mAuth.addAuthStateListener(mEvents.mAuthListener);
+        AppIndex.AppIndexApi.start(mGoogleApiClient, getIndexApiAction());
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        AppIndex.AppIndexApi.end(mGoogleApiClient, getIndexApiAction());
         if (mEvents.mAuthListener != null) {
             mAuth.removeAuthStateListener(mEvents.mAuthListener);
         }
+        mGoogleApiClient.disconnect();
     }
 
     @Override
@@ -101,6 +147,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 // Google Sign In failed, update UI appropriately
                 // ...
             }
+        }
+        else
+        {
+            //64206
+            mCallbackManager.onActivityResult(requestCode, resultCode, data);
+            Log.d(TAG, "requestCode: " + requestCode);
         }
     }
 
@@ -130,5 +182,40 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         // ...
                     }
                 });
+    }
+
+    private void handleFacebookAccessToken(AccessToken token) {
+        Log.d(TAG, "handleFacebookAccessToken:" + token);
+
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "signInWithCredential", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                        // ...
+                    }
+                });
+    }
+
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Login Page") // TODO: Define a title for the content shown.
+                .setUrl(Uri.parse("http://baxsoftware.com"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
     }
 }

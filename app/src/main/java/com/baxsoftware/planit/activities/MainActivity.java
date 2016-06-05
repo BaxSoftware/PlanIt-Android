@@ -1,4 +1,10 @@
-package com.baxsoftware.planit;
+package com.baxsoftware.planit.activities;
+
+import com.baxsoftware.planit.R;
+import com.baxsoftware.planit.models.*;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +25,11 @@ public class MainActivity extends PlanItActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Test Script
+        Event mTestEvent = new Event();
+        mTestEvent.name = "Test Event";
+        mTestEvent.update();
 
         // Setup the main activity frontend
         setContentView(R.layout.activity_main);

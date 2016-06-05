@@ -1,10 +1,12 @@
-package com.baxsoftware.planit;
+package com.baxsoftware.planit.managers;
 
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.baxsoftware.planit.activities.LoginActivity;
+import com.baxsoftware.planit.activities.MainActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;

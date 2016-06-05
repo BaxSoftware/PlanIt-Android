@@ -1,4 +1,4 @@
-package com.baxsoftware.planit;
+package com.baxsoftware.planit.activities;
 
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+
+import com.baxsoftware.planit.R;
 
 public class CreateEventActivity extends PlanItActivity {
 

@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@color/primary">
+    android:background="@color/colorPrimary">
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Time"
+        android:text="Description"
         android:id="@+id/textView4"
+        android:layout_marginTop="136dp"
         android:textSize="50dp"
-        android:textColor="#ffffff"
-        android:layout_above="@+id/timePicker"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffffff"/>
 
     <requestFocus/>
 
-    <TimePicker
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/timePicker"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/editText2"
         android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:paddingTop="20dp" />
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"/>
 
 
 </RelativeLayout>
